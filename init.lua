@@ -127,6 +127,12 @@ vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
 -- Easy file write with leader [from Alex]
 vim.keymap.set('n', '<leader>w', ':w!<CR>', { desc = 'Write file changes' })
 
+-- View hover information for the symbol under the cursor
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show hover documentation' })
+
+-- View signature help (parameter tooltips) as you type
+vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { desc = 'Show signature help' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -359,6 +365,8 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
+
+        basedpyright = {}, -- Python LSP (go-to-definition, hover, diagnostics, etc.)
 
         stylua = {}, -- Used to format Lua code
 
