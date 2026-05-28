@@ -694,7 +694,7 @@ require('lazy').setup({
   vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' }),
 
   -- require 'plugins.debug',
-  -- require 'plugins.indent_line',
+  require 'plugins.indent_line',
   -- require 'plugins.lint',
   require 'plugins.autopairs',
   -- require 'plugins.gitsigns', -- adds gitsigns recommended keymaps
