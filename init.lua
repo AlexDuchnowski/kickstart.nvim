@@ -697,6 +697,7 @@ require('lazy').setup({
   require 'plugins.indent_line',
   -- require 'plugins.lint',
   require 'plugins.autopairs',
+  require 'plugins.auto_session',
   -- require 'plugins.gitsigns', -- adds gitsigns recommended keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
