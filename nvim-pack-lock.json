@@ -1,9 +1,5 @@
 {
   "plugins": {
-    "auto-session": {
-      "rev": "3e145ee9af42eb6764908a1a481f53fe7f0bdbe5",
-      "src": "https://github.com/rmagatti/auto-session"
-    },
     "indent-blankline.nvim": {
       "rev": "d28a3f70721c79e3c5f6693057ae929f3d9c0a03",
       "src": "https://github.com/lukas-reineke/indent-blankline.nvim"

@@ -152,6 +152,11 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
+-- vim.pack-managed plugins (Neovim's built-in manager). Kept OUT of lazy's spec list below: these
+-- files return nil, which would create holes that truncate lazy's ipairs-based spec parsing.
+require 'plugins.indent_line'
+require 'plugins.autopairs'
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -691,13 +696,10 @@ require('lazy').setup({
   },
 
   require 'plugins.oil',
-  vim.keymap.set('n', '-', '<CMD>Oil --float<CR>', { desc = 'Open parent directory' }),
+  require 'plugins.auto_session',
 
   -- require 'plugins.debug',
-  require 'plugins.indent_line',
   -- require 'plugins.lint',
-  require 'plugins.autopairs',
-  require 'plugins.auto_session',
   -- require 'plugins.gitsigns', -- adds gitsigns recommended keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
