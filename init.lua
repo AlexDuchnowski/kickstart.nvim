@@ -127,11 +127,10 @@ vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
 -- Easy file write with leader [from Alex]
 vim.keymap.set('n', '<leader>w', ':w!<CR>', { desc = 'Write file changes' })
 
--- View hover information for the symbol under the cursor
+-- LSP keymaps
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show hover documentation' })
-
--- View signature help (parameter tooltips) as you type
 vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { desc = 'Show signature help' })
+vim.keymap.set('n', '<F2>', vim.lsp.buf.rename, { desc = 'Rename symbol under cursor' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -165,13 +164,6 @@ require 'plugins.autopairs'
 
 -- [[ Configure and install plugins ]]
 --
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
@@ -526,6 +518,13 @@ require('lazy').setup({
         -- See :h blink-cmp-config-keymap for defining your own keymap
         preset = 'default',
 
+        -- Map Enter to both select and accept the completion
+        ['<CR>'] = { 'select_and_accept', 'fallback' },
+
+        -- Map Tab to select next, and Enter/Control+Y to accept
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+        ['<C-y>'] = { 'select_and_accept', 'fallback' },
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
       },
