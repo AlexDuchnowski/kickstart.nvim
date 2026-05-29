@@ -242,6 +242,7 @@ require('lazy').setup({
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
 
+  require 'plugins.dashboard',
   require 'plugins.telescope',
   require 'plugins.lsp',
 
