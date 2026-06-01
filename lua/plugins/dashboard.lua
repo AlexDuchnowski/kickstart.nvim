@@ -13,47 +13,51 @@ local function custom_normal(mean, std_dev)
   return z0 * std_dev + mean
 end
 
+local function generate_memento_mori_display()
+  local life_expectancy_weeks = math.ceil(custom_normal(77, 15) * 365 / 7)
+
+  local dob = os.time { year = 2002, month = 6, day = 24 }
+  local weeks_lived = math.ceil(os.difftime(os.time(), dob) / 604800)
+
+  local display = '\n\n'
+  local row_width = 150
+
+  local lived = '='
+  local current = '>'
+  local unlived = '.'
+  local blank = ' '
+
+  for i = 0, math.ceil(life_expectancy_weeks / row_width) - 1 do
+    local row = ''
+
+    if (i + 1) * row_width < weeks_lived then
+      row = row .. string.rep(lived, row_width)
+    elseif weeks_lived > i * row_width then
+      local partial_row_weeks = weeks_lived % row_width
+      row = row .. string.rep(lived, partial_row_weeks - 1) .. current .. string.rep(unlived, row_width - partial_row_weeks)
+    elseif life_expectancy_weeks < (i + 1) * row_width then
+      local partial_row_weeks = life_expectancy_weeks % row_width
+      row = row .. string.rep(unlived, partial_row_weeks) .. string.rep(blank, row_width - partial_row_weeks)
+    else
+      row = row .. string.rep(unlived, row_width)
+    end
+
+    row = row .. '\n'
+
+    display = display .. row
+  end
+
+  display = display .. string.format('%s/%s\n', weeks_lived, life_expectancy_weeks) .. '\n\n'
+
+  return display
+end
+
 return {
   {
     'nvimdev/dashboard-nvim',
     lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
     opts = function()
-      local life_expectancy_weeks = math.ceil(custom_normal(77, 15) * 365 / 7)
-
-      local dob = os.time { year = 2002, month = 6, day = 24 }
-      local weeks_lived = math.ceil(math.floor(os.difftime(os.time(), dob) / 86400) / 7)
-
-      local display = '\n\n'
-      local row_width = 150
-
-      local lived = '='
-      local current = '>'
-      local unlived = '.'
-      local blank = ' '
-
-      for i = 0, math.ceil(life_expectancy_weeks / row_width) - 1 do
-        local row = ''
-
-        if (i + 1) * row_width < weeks_lived then
-          row = row .. string.rep(lived, row_width)
-        elseif weeks_lived > i * row_width then
-          local partial_row_weeks = weeks_lived % row_width
-          row = row .. string.rep(lived, partial_row_weeks - 1) .. current .. string.rep(unlived, row_width - partial_row_weeks)
-        elseif life_expectancy_weeks < (i + 1) * row_width then
-          local partial_row_weeks = life_expectancy_weeks % row_width
-          row = row .. string.rep(unlived, partial_row_weeks) .. string.rep(blank, row_width - partial_row_weeks)
-        else
-          row = row .. string.rep(unlived, row_width)
-        end
-
-        row = row .. '\n'
-
-        display = display .. row
-      end
-
-      display = display .. string.format('%s/%s\n', weeks_lived, life_expectancy_weeks)
-
-      display = display .. '\n\n'
+      local mm_dislpay = generate_memento_mori_display()
 
       local opts = {
         theme = 'doom',
@@ -63,7 +67,7 @@ return {
           statusline = false,
         },
         config = {
-          header = vim.split(display, '\n'),
+          header = vim.split(mm_dislpay, '\n'),
         -- stylua: ignore
         center = {
           { action = 'Telescope find_files',                           desc = " Find File",       icon = " ", key = "s" },
