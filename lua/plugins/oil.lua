@@ -9,7 +9,7 @@ return {
       },
     },
     keys = {
-      { '-', '<CMD>Oil --float<CR>', desc = 'Open parent directory' },
+      { '-', '<CMD>Oil<CR>', desc = 'Open parent directory' },
     },
     -- Optional dependencies
     dependencies = { { 'nvim-mini/mini.icons', opts = {} } },
