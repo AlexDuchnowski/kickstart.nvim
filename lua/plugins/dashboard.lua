@@ -1,3 +1,8 @@
+-- Seed the RNG once so the random life expectancy actually varies. Neovim's LuaJIT
+-- otherwise returns the same math.random() sequence on every launch. hrtime() gives a
+-- high-resolution seed, avoiding the same-second collisions a bare os.time() would cause.
+math.randomseed((vim.uv or vim.loop).hrtime() % 2147483647)
+
 -- Generates a standard normal random number (mean=0, stddev=1)
 local function standard_normal()
   local u1 = math.random()
@@ -56,18 +61,23 @@ return {
   {
     'nvimdev/dashboard-nvim',
     lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
+    -- dashboard-nvim only accepts `header` as a static list (unlike `footer`, it has no
+    -- function branch), and lazy evaluates `opts` just once — so the memento-mori header is
+    -- regenerated here, in a wrapper around the plugin's single render entry point
+    -- (`instance`), which both the startup UIEnter autocmd and `:Dashboard` call.
+    config = function(_, opts)
+      local db = require 'dashboard'
+      local orig_instance = db.instance
+      db.instance = function(self, ...)
+        if self.opts and self.opts.config then self.opts.config.header = vim.split(generate_memento_mori_display(), '\n') end
+        return orig_instance(self, ...)
+      end
+      db.setup(opts)
+    end,
     opts = function()
-      local mm_dislpay = generate_memento_mori_display()
-
       local opts = {
         theme = 'doom',
-        hide = {
-          -- this is taken care of by lualine
-          -- enabling this messes up the actual laststatus setting after loading a file
-          statusline = false,
-        },
         config = {
-          header = vim.split(mm_dislpay, '\n'),
         -- stylua: ignore
         center = {
           { action = 'Telescope find_files',                           desc = " Find File",       icon = " ", key = "s" },
