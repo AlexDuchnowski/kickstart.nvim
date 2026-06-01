@@ -1,18 +1,59 @@
+-- Generates a standard normal random number (mean=0, stddev=1)
+local function standard_normal()
+  local u1 = math.random()
+  local u2 = math.random()
+
+  local z0 = math.sqrt(-2.0 * math.log(u1)) * math.cos(2.0 * math.pi * u2)
+  return z0
+end
+
+-- Generates a normally distributed random number with a custom mean and standard deviation
+local function custom_normal(mean, std_dev)
+  local z0 = standard_normal() -- from the previous snippet
+  return z0 * std_dev + mean
+end
+
 return {
   {
     'nvimdev/dashboard-nvim',
     lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
     opts = function()
-      local logo = [[
-         ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
-         ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z    
-         ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z       
-         ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z         
-         ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║           
-         ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝           
-    ]]
+      local life_expectancy_weeks = math.ceil(custom_normal(77, 15) * 365 / 7)
 
-      logo = string.rep('\n', 8) .. logo .. '\n\n'
+      local dob = os.time { year = 2002, month = 6, day = 24 }
+      local weeks_lived = math.ceil(math.floor(os.difftime(os.time(), dob) / 86400) / 7)
+
+      local display = '\n\n'
+      local row_width = 150
+
+      local lived = '='
+      local current = '>'
+      local unlived = '.'
+      local blank = ' '
+
+      for i = 0, math.ceil(life_expectancy_weeks / row_width) - 1 do
+        local row = ''
+
+        if (i + 1) * row_width < weeks_lived then
+          row = row .. string.rep(lived, row_width)
+        elseif weeks_lived > i * row_width then
+          local partial_row_weeks = weeks_lived % row_width
+          row = row .. string.rep(lived, partial_row_weeks - 1) .. current .. string.rep(unlived, row_width - partial_row_weeks)
+        elseif life_expectancy_weeks < (i + 1) * row_width then
+          local partial_row_weeks = life_expectancy_weeks % row_width
+          row = row .. string.rep(unlived, partial_row_weeks) .. string.rep(blank, row_width - partial_row_weeks)
+        else
+          row = row .. string.rep(unlived, row_width)
+        end
+
+        row = row .. '\n'
+
+        display = display .. row
+      end
+
+      display = display .. string.format('%s/%s\n', weeks_lived, life_expectancy_weeks)
+
+      display = display .. '\n\n'
 
       local opts = {
         theme = 'doom',
@@ -22,15 +63,10 @@ return {
           statusline = false,
         },
         config = {
-          header = vim.split(logo, '\n'),
+          header = vim.split(display, '\n'),
         -- stylua: ignore
         center = {
-          { action = 'lua LazyVim.pick()()',                           desc = " Find File",       icon = " ", key = "f" },
-          { action = "ene | startinsert",                              desc = " New File",        icon = " ", key = "n" },
-          { action = 'lua LazyVim.pick("oldfiles")()',                 desc = " Recent Files",    icon = " ", key = "r" },
-          { action = 'lua LazyVim.pick("live_grep")()',                desc = " Find Text",       icon = " ", key = "g" },
-          { action = 'lua LazyVim.pick.config_files()()',              desc = " Config",          icon = " ", key = "c" },
-          { action = 'lua require("persistence").load()',              desc = " Restore Session", icon = " ", key = "s" },
+          { action = 'Telescope find_files',                           desc = " Find File",       icon = " ", key = "s" },
           { action = "Mason",                                          desc = " Mason",           icon = " ", key = "m" },
           { action = "Lazy",                                           desc = " Lazy",            icon = "󰒲 ", key = "l" },
           { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit",            icon = " ", key = "q" },
