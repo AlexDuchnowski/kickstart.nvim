@@ -73,25 +73,6 @@ return {
         return orig_instance(self, ...)
       end
       db.setup(opts)
-
-      -- Reopen the dashboard once the last real file buffer is closed.
-      local function is_real_file(buf)
-        return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted and vim.bo[buf].buftype == '' and vim.api.nvim_buf_get_name(buf) ~= ''
-      end
-
-      vim.api.nvim_create_autocmd('BufDelete', {
-        group = vim.api.nvim_create_augroup('dashboard-on-empty', { clear = true }),
-        callback = function(args)
-          -- Schedule so the deletion settles and the replacement scratch buffer is created.
-          vim.schedule(function()
-            if vim.bo.filetype == 'dashboard' then return end
-            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-              if buf ~= args.buf and is_real_file(buf) then return end
-            end
-            vim.cmd 'Dashboard'
-          end)
-        end,
-      })
     end,
     opts = function()
       local opts = {
