@@ -228,6 +228,8 @@ require('lazy').setup({
     },
   },
 
+  { 'akinsho/git-conflict.nvim', version = '*', config = true },
+
   -- NOTE: Plugins can specify dependencies.
   --
   -- The dependencies are proper plugin specifications as well - anything
