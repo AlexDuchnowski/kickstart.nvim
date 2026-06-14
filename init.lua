@@ -206,28 +206,6 @@ require('lazy').setup({
     config = true,
   },
 
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    main = 'ibl',
-    ---@module "ibl"
-    ---@type ibl.config
-    opts = {
-      indent = { highlight = {
-        'CursorColumn',
-        'Whitespace',
-      }, char = '' },
-      whitespace = {
-        highlight = {
-          'CursorColumn',
-          'Whitespace',
-        },
-        remove_blankline_trail = false,
-      },
-      scope = { enabled = false },
-      exclude = { filetypes = { 'dashboard' } },
-    },
-  },
-
   { 'akinsho/git-conflict.nvim', version = '*', config = true },
 
   -- NOTE: Plugins can specify dependencies.

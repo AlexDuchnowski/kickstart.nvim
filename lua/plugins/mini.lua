@@ -1,6 +1,6 @@
 return {
   { -- Collection of various small independent plugins/modules
-    'nvim-mini/mini.nvim',
+    'nvim-mini/mini.nvim', --  Check out: https://github.com/nvim-mini/mini.nvim
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -48,8 +48,20 @@ return {
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function() return '%2l:%-2v' end
 
-      -- ... and there is more!
-      --  Check out: https://github.com/nvim-mini/mini.nvim
+      local indentscope = require 'mini.indentscope'
+      indentscope.setup {
+        draw = {
+          delay = 0,
+          animation = indentscope.gen_animation.none(),
+        },
+      }
+
+      -- mini.indentscope has no `exclude` option (that's indent-blankline);
+      -- it is disabled per-buffer via this buffer-local variable instead.
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'dashboard' },
+        callback = function() vim.b.miniindentscope_disable = true end,
+      })
     end,
   },
 }

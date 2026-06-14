@@ -81,7 +81,7 @@ return {
         -- stylua: ignore
         center = {
           { action = 'Telescope find_files',                           desc = " Find File",       icon = " ", key = "s" },
-          { action = 'Oil',                                            desc = " Oil",             icon = " ", key = "o" },
+          { action = 'Oil --preview',                                  desc = " Oil",             icon = " ", key = "o" },
           { action = "Mason",                                          desc = " Mason",           icon = " ", key = "m" },
           { action = "Lazy",                                           desc = " Lazy",            icon = "󰒲 ", key = "l" },
           { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit",            icon = " ", key = "q" },
