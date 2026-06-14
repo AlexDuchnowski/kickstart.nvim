@@ -219,6 +219,7 @@ require('lazy').setup({
   require 'plugins.telescope',
   require 'plugins.lsp',
   require 'plugins.autoformat',
+  require 'plugins.autoclosetag',
   require 'plugins.autocompletion',
   require 'plugins.colorscheme',
   require 'plugins.mini',
