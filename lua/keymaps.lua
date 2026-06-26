@@ -10,6 +10,9 @@ keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [e]rror in float' })
 
+vim.keymap.set('n', '<leader>cp', function() vim.fn.setreg('+', vim.fn.expand '%:p') end, { desc = 'Copy full file path' })
+vim.keymap.set('n', '<leader>cr', function() vim.fn.setreg('+', vim.fn.expand '%') end, { desc = 'Copy relative file path' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
