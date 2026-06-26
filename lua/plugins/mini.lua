@@ -42,11 +42,15 @@ return {
       -- set use_icons to true if you have a Nerd Font
       statusline.setup { use_icons = vim.g.have_nerd_font }
 
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
+      -- mini.statusline with live clock appended. `section_location` is the
+      -- rightmost section in mini's default layout, so the time renders at the
+      -- far right of the statusline.
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function() return '%2l:%-2v' end
+      statusline.section_location = function() return '%2l:%-2v %#MiniStatuslineFileinfo# ' .. os.date '%H:%M:%S' end
+
+      -- The statusline only re-renders on events, so redraw every second.
+      local clock_timer = vim.uv.new_timer()
+      if clock_timer then clock_timer:start(1000, 1000, vim.schedule_wrap(function() vim.cmd 'redrawstatus' end)) end
 
       local indentscope = require 'mini.indentscope'
       indentscope.setup {
