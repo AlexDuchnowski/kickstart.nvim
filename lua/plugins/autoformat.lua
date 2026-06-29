@@ -25,6 +25,7 @@ return {
           javascriptreact = true,
           typescript = true,
           typescriptreact = true,
+          json = true,
         }
         if enabled_filetypes[vim.bo[bufnr].filetype] then
           return { timeout_ms = 500 }
@@ -47,6 +48,7 @@ return {
         javascriptreact = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
         typescript = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
         typescriptreact = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+        json = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
