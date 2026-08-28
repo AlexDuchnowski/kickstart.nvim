@@ -1,0 +1,49 @@
+-- return {
+--   {
+--     '3rd/image.nvim',
+--     build = false,
+--     opts = {
+--       backend = 'ueberzug',
+--       processor = 'magick_cli',
+--       integrations = {
+--         markdown = {
+--           enabled = true,
+--           clear_in_insert_mode = false,
+--           download_remote_images = true,
+--           only_render_image_at_cursor = false,
+--           only_render_image_at_cursor_mode = 'popup',
+--           floating_windows = false,
+--           filetypes = { 'markdown', 'vimwiki' },
+--         },
+--       },
+--       hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' },
+--     },
+--     config = function(_, opts)
+--       local image = require 'image'
+--       image.setup(opts)
+--
+--       local group = vim.api.nvim_create_augroup('image-oil-preview-cleanup', { clear = true })
+--       local clear_images = function()
+--         pcall(image.clear)
+--       end
+--
+--       vim.api.nvim_create_autocmd({ 'BufLeave', 'WinLeave' }, {
+--         group = group,
+--         pattern = '*',
+--         callback = function(args)
+--           if vim.bo[args.buf].filetype == 'image_nvim' then
+--             clear_images()
+--           end
+--         end,
+--       })
+--
+--       vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorMoved' }, {
+--         group = group,
+--         pattern = 'oil://*',
+--         callback = clear_images,
+--       })
+--     end,
+--   },
+-- }
+
+return {}

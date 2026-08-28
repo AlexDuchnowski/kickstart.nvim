@@ -223,7 +223,9 @@ require('lazy').setup({
   require 'plugins.autocompletion',
   require 'plugins.colorscheme',
   require 'plugins.mini',
+  require 'plugins.mdpreview',
   require 'plugins.treesitter',
+  -- require 'plugins.image',
   require 'plugins.oil',
   require 'plugins.auto_session',
 
